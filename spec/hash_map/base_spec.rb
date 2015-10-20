@@ -6,7 +6,7 @@ module HashMap
       {
         name: 'Artur',
         first_surname: 'hello',
-        secornd_surname: 'world',
+        second_surname: 'world',
         address: {
           postal_code: 12345,
           country: {
@@ -20,7 +20,7 @@ module HashMap
     end
     class ProfileMapper < HashMap::Base
       property :first_name, from: :name
-      property(:last_name) { |input| "#{input[:first_surname]} #{input[:secornd_surname]}" }
+      property(:last_name) { |input| "#{input[:first_surname]} #{input[:second_surname]}" }
       property :language, from: [:address, :country, :language], transform: proc {|context, value| value.downcase }
 
       from_children :address do
@@ -42,7 +42,7 @@ module HashMap
 
     it { expect(subject[:first_name]).to eq original[:name] }
     it { expect(subject[:language]).to eq original[:address][:country][:language] }
-    it { expect(subject[:last_name]).to eq  "#{original[:first_surname]} #{original[:secornd_surname]}"}
+    it { expect(subject[:last_name]).to eq  "#{original[:first_surname]} #{original[:second_surname]}"}
     it { expect(subject[:email][:address]).to eq  original[:email]}
     it { expect(subject[:email][:type]).to eq :work }
 

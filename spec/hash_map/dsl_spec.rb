@@ -5,7 +5,7 @@ module HashMap
     class TryDSL
       include ToDSL
       property :first_name, from: :name
-      property(:last_name) { |input| "#{input[:first_surname]} #{input[:secornd_surname]}" }
+      property(:last_name) { |input| "#{input[:first_surname]} #{input[:second_surname]}" }
       property :language, from: [:country, :language], transform: proc {|context, value| value.downcase }
 
       from_children :address do
@@ -35,7 +35,7 @@ module HashMap
     let(:data_structure) do
       [
         { key: [:first_name], from: [:name] },
-        { key: [:last_name], proc: proc { |input| "#{input[:first_surname]} #{input[:secornd_surname]}" } },
+        { key: [:last_name], proc: proc { |input| "#{input[:first_surname]} #{input[:second_surname]}" } },
         { key: [:language], from: [:country, :language], transform: proc {|context, value| value.downcase } },
         { key: [:country_name], from: [:address, :country, :country_name] },
         { key: [:email, :address], from: [:email] },
