@@ -10,5 +10,6 @@ module HashMap
     def output
       mapper.output
     end
+    alias_method :to_h, :output
   end
 end
