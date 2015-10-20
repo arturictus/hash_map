@@ -1,8 +1,8 @@
 # HashMap
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/hash_map`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+HashMap is a small library that allow you to map hashes with style :).
+It will remove from your code many of the ugly navigation inside hashes to
+get your needed hash structure.
 
 ## Installation
 
@@ -22,7 +22,68 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Your hash:
+
+```ruby
+{
+  name: 'Artur',
+  first_surname: 'hello',
+  second_surname: 'world',
+  address: {
+    postal_code: 12345,
+    country: {
+      name: 'Spain',
+      language: 'ES'
+    }
+  },
+  email: 'asdf@sdfs.com',
+  phone: nil
+}
+```
+
+Your beautiful Mapper:
+
+```ruby
+class ProfileMapper < HashMap::Base
+  property :first_name, from: :name
+  property(:last_name) { |input| "#{input[:first_surname]} #{input[:second_surname]}" }
+  property :language, from: [:address, :country, :language]
+
+  from_children :address do
+    property :code, from: :postal_code
+    from_children :country do
+      property :country_name
+    end
+  end
+
+  to_children :email do
+    property :address, from: :email
+    property :type, default: :work
+  end
+
+  property :telephone, from: :phone
+end
+```
+
+Your wanted hash:
+
+```ruby
+ProfileMapper.new(original).to_h
+=> {
+  first_name: "Artur",
+  last_name: "hello world",
+  language: "ES",
+  code: 12345,
+  country_name: nil,
+  email: {
+    address: "asdf@sdfs.com",
+    type: :work
+  },
+  telephone: nil
+}
+```
+
+Enjoy!
 
 ## Development
 
@@ -38,4 +99,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
