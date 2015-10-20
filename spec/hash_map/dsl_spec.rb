@@ -3,7 +3,7 @@ require File.join(HashMap.root, 'lib/hash_map/dsl')
 module HashMap
   describe DSL do
     class TryDSL
-      extend ToDSL
+      include ToDSL
       property :first_name, from: :name
       property(:last_name) { |input| "#{input[:first_surname]} #{input[:secornd_surname]}" }
       property :language, from: [:country, :language], transform: proc {|context, value| value.downcase }

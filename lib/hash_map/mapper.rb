@@ -26,6 +26,7 @@ module HashMap
 
     def get_value_from_key(struct)
       struct[:from].inject(original) do |output, k|
+        break unless output.respond_to?(:[])
         output.send(:[], k)
       end
     end

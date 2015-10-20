@@ -7,3 +7,4 @@ module HashMap
 end
 require 'hash_map/dsl'
 require 'hash_map/mapper'
+require 'hash_map/base'

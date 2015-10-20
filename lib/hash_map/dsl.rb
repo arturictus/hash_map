@@ -1,24 +1,36 @@
 module HashMap
   module ToDSL
-    def method_missing(method, *args, &block)
-      if dsl.respond_to?(method)
-        dsl.send(method, *args, &block)
-      else
-        super
+    extend ActiveSupport::Concern
+    class_methods do
+      def method_missing(method, *args, &block)
+        if dsl.respond_to?(method)
+          dsl.send(method, *args, &block)
+        else
+          super
+        end
+      end
+
+      def dsl
+        @dsl ||= DSL.new
+      end
+
+      def attributes
+        dsl.attributes
       end
     end
-    def dsl
-      @dsl ||= DSL.new
-    end
   end
+
   class DSL
     attr_reader :attributes
+
     def initialize
       @attributes = []
     end
+
     def attributes
       @attributes
     end
+
     def property(key, opts = {}, &block)
       new = {}.tap{ |h| h[:key] =  single_to_ary(key) }
       new[:proc] = block if block
@@ -26,11 +38,13 @@ module HashMap
       attributes << new.merge!(opts.except(:from))
       new
     end
+
     def from_children(key, opts = {}, &block)
       flat = _nested(key, opts, &block)
       flat.each { |attr| attr[:from].unshift(key) }
       @attributes += flat
     end
+
     def to_children(key, opts = {}, &block)
       flat = _nested(key, opts, &block)
       flat.each { |attr| attr[:key].unshift(key) }
