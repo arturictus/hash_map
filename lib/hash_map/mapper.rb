@@ -1,11 +1,13 @@
 module HashMap
-  class Mapper < Struct.new(:original, :data_structure)
-    # attr_reader :original, :data_structure
-    # def initialize(original, data_structure)
-    #   @
-    # end
+  class Mapper
+    attr_reader :original, :data_structure
+    def initialize(original, data_structure)
+      @original = HashWithIndifferentAccess.new(original)
+      @data_structure = data_structure
+    end
+
     def output
-      new_hash = {}
+      new_hash = HashWithIndifferentAccess.new
       data_structure.each do |struc|
         value = get_value(struc)
         new_hash.deep_merge! build_keys(struc[:key], value)
@@ -33,7 +35,7 @@ module HashMap
 
     def build_keys(ary, value)
       ary.reverse.inject(value) do |a, n|
-        { n => a }
+        HashWithIndifferentAccess.new({ n => a })
       end
     end
 
