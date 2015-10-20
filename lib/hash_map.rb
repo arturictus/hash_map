@@ -7,3 +7,4 @@ module HashMap
     File.expand_path '../..', __FILE__
   end
 end
+require 'hash_map/mapper'
