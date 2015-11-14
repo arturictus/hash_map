@@ -46,13 +46,17 @@ Your beautiful Mapper:
 ```ruby
 class ProfileMapper < HashMap::Base
   property :first_name, from: :name
-  property(:last_name) { |input| "#{input[:first_surname]} #{input[:second_surname]}" }
+
+  property :last_name do |input|
+    "#{input[:first_surname]} #{input[:second_surname]}"
+  end
+
   property :language, from: [:address, :country, :language]
 
   from_children :address do
     property :code, from: :postal_code
     from_children :country do
-      property :country_name
+      property :country_name, from: :name
     end
   end
 
@@ -74,7 +78,7 @@ ProfileMapper.new(original).to_h
   last_name: "hello world",
   language: "ES",
   code: 12345,
-  country_name: nil,
+  country_name: "Spain",
   email: {
     address: "asdf@sdfs.com",
     type: :work
