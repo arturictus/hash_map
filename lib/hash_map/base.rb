@@ -8,8 +8,9 @@ module HashMap
     end
 
     def output
-      mapper.output
+      @output ||= mapper.output
     end
     alias_method :to_h, :output
+    alias_method :to_hash, :output
   end
 end

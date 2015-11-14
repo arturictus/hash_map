@@ -26,7 +26,7 @@ module HashMap
       from_children :address do
         property :code, from: :postal_code
         from_children :country do
-          property :country_name
+          property :country_name, from: :name
         end
       end
 
@@ -45,6 +45,16 @@ module HashMap
     it { expect(subject[:last_name]).to eq  "#{original[:first_surname]} #{original[:second_surname]}"}
     it { expect(subject[:email][:address]).to eq  original[:email]}
     it { expect(subject[:email][:type]).to eq :work }
+    it { expect(subject[:country_name]).to eq 'Spain' }
+
+    describe '#output' do
+      it 'has alias :to_h' do
+        expect(subject.method(:to_h)).to eq(subject.method(:output))
+      end
+      it 'has alias :to_hash' do
+        expect(subject.method(:to_hash)).to eq(subject.method(:output))
+      end
+    end
 
   end
 end
