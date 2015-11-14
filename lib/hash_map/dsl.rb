@@ -32,11 +32,11 @@ module HashMap
     end
 
     def property(key, opts = {}, &block)
-      new = {}.tap{ |h| h[:key] =  single_to_ary(key) }
-      new[:proc] = block if block
-      new[:from] = generate_from(new, opts)
-      attributes << new.merge!(opts.except(:from))
-      new
+      new_hash = {}.tap{ |h| h[:key] =  single_to_ary(key) }
+      new_hash[:proc] = block if block
+      new_hash[:from] = generate_from(new_hash, opts)
+      attributes << new_hash.merge!(opts.except(:from))
+      new_hash
     end
 
     def from_children(key, opts = {}, &block)
@@ -65,8 +65,7 @@ module HashMap
     end
 
     def single_to_ary(elem)
-      return if elem.nil?
-      elem.is_a?(Array) ? elem : [elem]
+      Array.wrap(elem)
     end
   end
 end
