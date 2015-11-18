@@ -72,7 +72,7 @@ end
 Your wanted hash:
 
 ```ruby
-ProfileMapper.new(original).to_h
+ProfileMapper.map(original)
 => {
   first_name: "Artur",
   last_name: "hello world",
@@ -86,6 +86,9 @@ ProfileMapper.new(original).to_h
   telephone: nil
 }
 ```
+**IMPORTANT:**
+- The **output** is a **HashWithIndifferentAccess** you can access the values with strings or symbols.
+- The input is transformed as well, that's why you do not need to use strings.
 
 Enjoy!
 
@@ -140,9 +143,41 @@ hash = {
   }
 }
 
-Blocks.new(hash).to_h
+Blocks.map(hash)
 # => {"street"=>"STREET", "owner"=>"name", "country"=>"ES", "name"=>"name"}
 
+```
+
+### Motivation
+I got bored of doing this:
+```ruby
+# this is a hash from an API
+hash = JSON.parse(response, :symbolize_names => true)
+# hash = {
+#   user: {
+#     name: 'John',
+#     last_name: 'Doe',
+#     telephone: '989898',
+#     country: {
+#       code: 'es'
+#     }
+#   }
+# }
+
+user_hash = hash[:user]
+user = User.new
+user.name = user_hash[:name]
+user.lastname = user_hash[:last_name]
+user.phone = Phone.parse(user_hash[:telephone])
+user.country = Country.find_by(code: user_hash[:country][:code])
+
+# boring!!!
+# and that's a tiny response
+```
+
+solution:
+```ruby
+user = User.new(MyMapper.map(hash)) # done
 ```
 
 ## Development
