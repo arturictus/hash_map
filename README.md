@@ -97,6 +97,46 @@ class Properties < HashMap::Base
 end
 ```
 
+**blocks:**
+
+If in **fron_child** block when you want to get the value with a block
+the value of the child and original will be yielded in this order: child, original
+
+```ruby
+class Blocks < HashMap::Base
+  from_child :address do
+    property :street do |address|
+      address[:street].upcase
+    end
+    property :owner do |address, original|
+      original[:name]
+    end
+    from_child :country do
+      property :country do |country|
+        country[:code].upcase
+      end
+    end
+  end
+  property :name do |original|
+    original[:name]
+  end
+end
+
+hash = {
+  name: 'name',
+  address:{
+    street: 'street',
+    country:{
+      code: 'es'
+    }
+  }
+}
+
+Blocks.new(hash).to_h
+# => {"street"=>"STREET", "owner"=>"name", "country"=>"ES", "name"=>"name"}
+
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake rspec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

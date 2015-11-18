@@ -37,6 +37,5 @@ describe 'Blocks' do
     it { expect(subject[:owner]).to eq 'name' }
     it { expect(subject[:street]).to eq 'STREET' }
     it { expect(subject[:country]).to eq 'ES' }
-    xit { binding.pry }
   end
 end
