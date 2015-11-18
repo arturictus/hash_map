@@ -52,7 +52,10 @@ module HashMap
 
     def from_child(key, opts = {}, &block)
       flat = _nested(key, opts, &block)
-      flat.each { |attr| attr[:from].unshift(key) }
+      flat.each do |attr|
+        attr[:from].unshift(key)
+        attr[:from_child] ? attr[:from_child].unshift(key) : attr[:from_child] = [key]
+      end
       @attributes += flat
     end
 

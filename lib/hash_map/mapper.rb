@@ -18,18 +18,28 @@ module HashMap
     private
 
     def get_value(struct)
-      value = if block = struct[:proc]
-        block.call(original)
+      value = if struct[:proc]
+        execute_block(struct)
       elsif struct[:from]
         get_value_from_key(struct)
       end
       nil_to_default(value, struct)
     end
 
-    def get_value_from_key(struct)
-      struct[:from].inject(original) do |output, k|
+    def get_value_from_key(struct, from = :from)
+      struct[from].inject(original) do |output, k|
         break unless output.respond_to?(:[])
         output.send(:[], k)
+      end
+    end
+
+    def execute_block(struct)
+      block = struct[:proc]
+      if struct[:from_child]
+        nested = get_value_from_key(struct, :from_child)
+        block.call(nested, original)
+      else
+        block.call(original, original)
       end
     end
 
