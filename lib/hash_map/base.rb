@@ -3,6 +3,10 @@ module HashMap
     include ToDSL
     delegate :[], to: :output
 
+    def self.map(input)
+      new(input).output
+    end
+
     def mapper
       @mapper ||= Mapper.new(original, self.class.attributes)
     end

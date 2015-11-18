@@ -32,7 +32,7 @@ describe 'Blocks' do
         }
       }
     end
-    subject { Blocks.new(original).to_h }
+    subject { Blocks.map(original) }
     it { expect(subject[:name]).to eq 'name' }
     it { expect(subject[:owner]).to eq 'name' }
     it { expect(subject[:street]).to eq 'STREET' }
