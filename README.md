@@ -53,14 +53,14 @@ class ProfileMapper < HashMap::Base
 
   property :language, from: [:address, :country, :language]
 
-  from_children :address do
+  from_child :address do
     property :code, from: :postal_code
-    from_children :country do
+    from_child :country do
       property :country_name, from: :name
     end
   end
 
-  to_children :email do
+  to_child :email do
     property :address, from: :email
     property :type, default: :work
   end

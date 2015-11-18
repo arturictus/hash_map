@@ -39,13 +39,29 @@ module HashMap
       new_hash
     end
 
+    def properties(*args)
+      args.each do |arg|
+        property(*arg)
+      end
+    end
+
     def from_children(key, opts = {}, &block)
+      puts "[Depercation Warning] using: #{__callee__} use from_child instead"
+      from_child(key, opts, &block)
+    end
+
+    def from_child(key, opts = {}, &block)
       flat = _nested(key, opts, &block)
       flat.each { |attr| attr[:from].unshift(key) }
       @attributes += flat
     end
 
     def to_children(key, opts = {}, &block)
+      puts "[Depercation Warning] using: #{__callee__} use to_child instead"
+      to_child(key, opts, &block)
+    end
+
+    def to_child(key, opts = {}, &block)
       flat = _nested(key, opts, &block)
       flat.each { |attr| attr[:key].unshift(key) }
       @attributes += flat
