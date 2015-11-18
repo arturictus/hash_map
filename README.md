@@ -90,6 +90,14 @@ ProfileMapper.new(original).to_h
 Enjoy!
 
 ### Examples:
+**no from needed**
+```ruby
+class Clever < HashMap::Base
+  property :name # will get value from the key 'name'
+  property :address
+end
+```
+
 **properties**
 ```ruby
 class Properties < HashMap::Base
