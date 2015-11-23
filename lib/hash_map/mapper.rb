@@ -45,12 +45,12 @@ module HashMap
 
     def build_keys(ary, value)
       ary.reverse.inject(value) do |a, n|
-        HashWithIndifferentAccess.new({ n => a })
+        HashWithIndifferentAccess.new(n => a)
       end
     end
 
     def nil_to_default(value, struct)
-      value || struct[:default]
+      value.nil? ? struct[:default] : value
     end
   end
 end
