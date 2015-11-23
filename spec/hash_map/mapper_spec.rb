@@ -18,7 +18,7 @@ module HashMap
       }
     end
 
-    class HashMap
+    class FooHashMap
       def self.attributes
         [
           { key: [:first_name], from: [:name] },
@@ -31,7 +31,7 @@ module HashMap
     end
 
     subject do
-      described_class.new(original, HashMap.new).output
+      described_class.new(original, FooHashMap.new).output
     end
 
     it { expect(subject[:first_name]).to eq original[:name] }
