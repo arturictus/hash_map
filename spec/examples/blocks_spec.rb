@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'pry'
 describe 'Blocks' do
   describe 'inside from_child' do
     class Blocks < HashMap::Base
@@ -20,9 +19,6 @@ describe 'Blocks' do
       property :name do |original|
         original[:name]
       end
-      property :class_name do
-        self.class.name
-      end
     end
 
     let(:original) do
@@ -41,6 +37,5 @@ describe 'Blocks' do
     it { expect(subject[:owner]).to eq 'name' }
     it { expect(subject[:street]).to eq 'STREET' }
     it { expect(subject[:country]).to eq 'ES' }
-    it { expect(subject[:class_name]).to eq 'Blocks' }
   end
 end
