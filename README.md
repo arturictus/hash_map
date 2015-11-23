@@ -130,7 +130,7 @@ end
 
 **Blocks:**
 
-If in **fron_child** block when you want to get the value with a block
+In **from_child** block when you want to get the value with a block
 the value of the child and original will be yielded in this order: child, original
 
 ```ruby
