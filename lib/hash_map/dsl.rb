@@ -27,10 +27,6 @@ module HashMap
       @attributes = []
     end
 
-    # def attributes
-    #   @attributes
-    # end
-
     def property(key, opts = {}, &block)
       new_hash = {}.tap { |h| h[:key] = single_to_ary(key) }
       new_hash[:proc] = block if block
