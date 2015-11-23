@@ -17,17 +17,21 @@ module HashMap
         phone: nil
       }
     end
-    let(:data_structure) do
-      [
-        { key: [:first_name], from: [:name] },
-        { key: [:last_name], proc: proc { |input| "#{input[:first_surname]} #{input[:second_surname]}" } },
-        { key: [:language], from: [:address, :country, :language], transform: proc {|context, value| value.downcase } },
-        { key: [:email, :address], from: [:email] },
-        { key: [:email, :type], default: :work },
-      ]
+
+    class HashMap
+      def self.attributes
+        [
+          { key: [:first_name], from: [:name] },
+          { key: [:last_name], proc: proc { |input| "#{input[:first_surname]} #{input[:second_surname]}" } },
+          { key: [:language], from: [:address, :country, :language], transform: proc {|context, value| value.downcase } },
+          { key: [:email, :address], from: [:email] },
+          { key: [:email, :type], default: :work },
+        ]
+      end
     end
+
     subject do
-      described_class.new(original, data_structure).output
+      described_class.new(original, HashMap.new).output
     end
 
     it { expect(subject[:first_name]).to eq original[:name] }
