@@ -1,5 +1,6 @@
 require 'spec_helper'
 require File.join(HashMap.root, 'lib/hash_map/dsl')
+require 'pry'
 module HashMap
   describe DSL do
     def find_by_key(attrs, key)
@@ -109,6 +110,49 @@ module HashMap
       it do
         expect(find_by_key(attributes, [:house]).try(:[], :from))
           .to eq(find_by_key(data_structure, [:house])[:from])
+      end
+    end
+    describe 'collection' do
+      class Collectable; end
+      class TryCollection
+        include ToDSL
+        collection :collectable, mapper: Collectable
+        collection :numbers, mapper: proc { |n| n.to_i }
+      end
+
+      let(:data_structure) do
+        [
+          { key: [:collectable], from: [:collectable], mapper: Collectable, is_collection: true },
+          { key: [:numbers], from: [:numbers], mapper: proc { |n| n.to_i }, is_collection: true },
+        ]
+      end
+      let(:const) { TryCollection }
+      let(:attributes) { const.attributes }
+      it do
+        expect(find_by_key(attributes, [:collectable]).try(:[], :mapper))
+          .to eq(find_by_key(data_structure, [:collectable])[:mapper])
+      end
+      it do
+        expect(find_by_key(attributes, [:collectable]).try(:[], :is_collection))
+          .to eq(find_by_key(data_structure, [:collectable])[:is_collection])
+      end
+      it do
+        expect(find_by_key(attributes, [:numbers]).try(:[], :is_collection))
+          .to eq(find_by_key(data_structure, [:numbers])[:is_collection])
+      end
+      it do
+        expect(find_by_key(attributes, [:numbers]).try(:[], :mapper))
+          .to be_a(Proc)
+      end
+      describe 'errors' do
+        it do
+          expect do
+            class CollectionErrors
+              include ToDSL
+              collection :errors
+            end
+          end.to raise_error DSL::NoMapperForCollection
+        end
       end
     end
   end

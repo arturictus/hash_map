@@ -21,6 +21,7 @@ module HashMap
   end
 
   class DSL
+    class NoMapperForCollection < StandardError; end
     attr_reader :attributes
 
     def initialize
@@ -35,6 +36,14 @@ module HashMap
       new_hash
     end
 
+    def collection(key, opts = {}, &block)
+      unless opts[:mapper]
+        fail NoMapperForCollection, "[HashMap Error] Called 'collection' without the ':mapper' option"
+      end
+      opts.merge!(is_collection: true)
+      property(key, opts, &block)
+    end
+
     def properties(*args)
       args.each do |arg|
         property(*arg)
@@ -42,7 +51,7 @@ module HashMap
     end
 
     def from_children(key, opts = {}, &block)
-      puts "[Depercation Warning] using: #{__callee__} use from_child instead"
+      puts "[HashMap Deprecation Warning] using: #{__callee__} use from_child instead"
       from_child(key, opts, &block)
     end
 
@@ -56,7 +65,7 @@ module HashMap
     end
 
     def to_children(key, opts = {}, &block)
-      puts "[Depercation Warning] using: #{__callee__} use to_child instead"
+      puts "[HashMap Deprecation Warning] using: #{__callee__} use to_child instead"
       to_child(key, opts, &block)
     end
 

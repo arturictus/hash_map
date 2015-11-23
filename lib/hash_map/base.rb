@@ -6,6 +6,7 @@ module HashMap
     def self.map(input)
       new(input).output
     end
+    singleton_class.send(:alias_method, :call, :map)
 
     def mapper
       @mapper ||= Mapper.new(original, self)
