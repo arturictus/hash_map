@@ -108,6 +108,22 @@ class Properties < HashMap::Base
   properties :name, :address, :house
 end
 ```
+
+**Collections:**
+
+You can map collections passing the mapper option, can be another mapper a proc or anything responding to `.call` with one argument.
+
+```ruby
+class Thing < HashMap::Base
+  properties :name, :age
+end
+
+class Collections < HashMap::Base
+  collection :things, mapper: Thing
+  collection :numbers, mapper: proc { |n| n.to_i }
+end
+```
+
 **Methods:**
 
 You can create your helpers in the mapper and call them inside the block
