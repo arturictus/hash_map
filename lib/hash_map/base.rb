@@ -8,7 +8,7 @@ module HashMap
     end
 
     def mapper
-      @mapper ||= Mapper.new(original, self.class.attributes)
+      @mapper ||= Mapper.new(original, self)
     end
 
     def output

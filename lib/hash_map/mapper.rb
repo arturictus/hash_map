@@ -1,14 +1,14 @@
 module HashMap
   class Mapper
-    attr_reader :original, :data_structure
-    def initialize(original, data_structure)
+    attr_reader :original, :hash_map
+    def initialize(original, hash_map)
       @original = HashWithIndifferentAccess.new(original)
-      @data_structure = data_structure
+      @hash_map = hash_map
     end
 
     def output
       new_hash = HashWithIndifferentAccess.new
-      data_structure.each do |struc|
+      hash_map.class.attributes.each do |struc|
         value = get_value(struc)
         new_hash.deep_merge! build_keys(struc[:key], value)
       end
@@ -37,9 +37,9 @@ module HashMap
       block = struct[:proc]
       if struct[:from_child]
         nested = get_value_from_key(struct, :from_child)
-        block.call(nested, original)
+        hash_map.instance_exec nested, original, &block
       else
-        block.call(original, original)
+        hash_map.instance_exec original, original, &block
       end
     end
 
