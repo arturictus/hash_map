@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'pry'
 module HashMap
   describe Base do
     let(:original) do
@@ -8,7 +7,7 @@ module HashMap
         first_surname: 'hello',
         second_surname: 'world',
         address: {
-          postal_code: 12345,
+          postal_code: 12_345,
           country: {
             name: 'Spain',
             language: 'ES'
@@ -18,10 +17,15 @@ module HashMap
         phone: nil
       }
     end
+
     class ProfileMapper < HashMap::Base
       property :first_name, from: :name
-      property(:last_name) { |input| "#{input[:first_surname]} #{input[:second_surname]}" }
-      property :language, from: [:address, :country, :language], transform: proc {|context, value| value.downcase }
+      property :last_name do |input|
+        "#{input[:first_surname]} #{input[:second_surname]}"
+      end
+      property :language,
+               from: [:address, :country, :language],
+               transform: proc { |_, value| value.downcase }
 
       from_child :address do
         property :code, from: :postal_code
@@ -42,8 +46,8 @@ module HashMap
 
     it { expect(subject[:first_name]).to eq original[:name] }
     it { expect(subject[:language]).to eq original[:address][:country][:language] }
-    it { expect(subject[:last_name]).to eq  "#{original[:first_surname]} #{original[:second_surname]}"}
-    it { expect(subject[:email][:address]).to eq  original[:email]}
+    it { expect(subject[:last_name]).to eq "#{original[:first_surname]} #{original[:second_surname]}"}
+    it { expect(subject[:email][:address]).to eq original[:email]}
     it { expect(subject[:email][:type]).to eq :work }
     it { expect(subject[:country_name]).to eq 'Spain' }
 
@@ -55,6 +59,5 @@ module HashMap
         expect(subject.method(:to_hash)).to eq(subject.method(:output))
       end
     end
-
   end
 end

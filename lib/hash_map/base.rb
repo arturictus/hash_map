@@ -1,5 +1,5 @@
 module HashMap
-  class Base < Struct.new(:original)
+  Base = Struct.new(:original) do
     include ToDSL
     delegate :[], to: :output
 

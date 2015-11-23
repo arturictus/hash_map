@@ -1,4 +1,4 @@
-require "hash_map/version"
+require 'hash_map/version'
 require 'active_support/all'
 module HashMap
   def self.root

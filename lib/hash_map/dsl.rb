@@ -27,12 +27,12 @@ module HashMap
       @attributes = []
     end
 
-    def attributes
-      @attributes
-    end
+    # def attributes
+    #   @attributes
+    # end
 
     def property(key, opts = {}, &block)
-      new_hash = {}.tap{ |h| h[:key] =  single_to_ary(key) }
+      new_hash = {}.tap { |h| h[:key] = single_to_ary(key) }
       new_hash[:proc] = block if block
       new_hash[:from] = generate_from(new_hash, opts)
       attributes << new_hash.merge!(opts.except(:from))
@@ -77,7 +77,7 @@ module HashMap
       from ? single_to_ary(from) : hash[:key].dup
     end
 
-    def _nested(key, opts = {}, &block)
+    def _nested(_key, _opts = {}, &block)
       klass = self.class.new
       klass.instance_exec(&block)
       klass.attributes.flatten

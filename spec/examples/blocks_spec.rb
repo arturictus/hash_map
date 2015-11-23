@@ -24,9 +24,9 @@ describe 'Blocks' do
     let(:original) do
       {
         name: 'name',
-        address:{
+        address: {
           street: 'street',
-          country:{
+          country: {
             code: 'es'
           }
         }

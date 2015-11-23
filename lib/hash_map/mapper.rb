@@ -19,10 +19,10 @@ module HashMap
 
     def get_value(struct)
       value = if struct[:proc]
-        execute_block(struct)
-      elsif struct[:from]
-        get_value_from_key(struct)
-      end
+                execute_block(struct)
+              elsif struct[:from]
+                get_value_from_key(struct)
+              end
       nil_to_default(value, struct)
     end
 

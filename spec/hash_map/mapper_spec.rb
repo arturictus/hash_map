@@ -36,9 +36,10 @@ module HashMap
 
     it { expect(subject[:first_name]).to eq original[:name] }
     it { expect(subject[:language]).to eq original[:address][:country][:language] }
-    it { expect(subject[:last_name]).to eq  "#{original[:first_surname]} #{original[:second_surname]}"}
-    it { expect(subject[:email][:address]).to eq  original[:email]}
+    it { expect(subject[:last_name]).to eq "#{original[:first_surname]} #{original[:second_surname]}"}
+    it { expect(subject[:email][:address]).to eq original[:email]}
     it { expect(subject[:email][:type]).to eq :work }
+
     describe 'with indifferent access' do
       let(:original) do
         {
