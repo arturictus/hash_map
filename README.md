@@ -1,4 +1,5 @@
 # HashMap
+[ ![Codeship Status for arturictus/hash_map](https://codeship.com/projects/5900adb0-7452-0133-84a1-52f3970f70f1/status?branch=master)](https://codeship.com/projects/117597)
 
 HashMap is a small library that allow you to map hashes with style :).
 It will remove from your code many of the ugly navigation inside hashes to
@@ -93,7 +94,7 @@ ProfileMapper.map(original)
 Enjoy!
 
 ### Examples:
-**no from needed**
+**No 'from' key needed:**
 ```ruby
 class Clever < HashMap::Base
   property :name # will get value from the key 'name'
@@ -101,14 +102,33 @@ class Clever < HashMap::Base
 end
 ```
 
-**properties**
+**Properties:**
 ```ruby
 class Properties < HashMap::Base
   properties :name, :address, :house
 end
 ```
+**Methods:**
 
-**blocks:**
+You can create your helpers in the mapper and call them inside the block
+
+```ruby
+class Methods < HashMap::Base
+  property(:common_names) { names }
+  property(:date) { |original| parse_date original[:date] }
+  property(:class_name) { self.class.name } #=> "Methods"
+
+  def names
+    %w(John Morty)
+  end
+
+  def parse_date(date)
+    date.strftime('%H:%M')
+  end
+end
+```
+
+**Blocks:**
 
 If in **fron_child** block when you want to get the value with a block
 the value of the child and original will be yielded in this order: child, original
@@ -147,6 +167,8 @@ Blocks.map(hash)
 # => {"street"=>"STREET", "owner"=>"name", "country"=>"ES", "name"=>"name"}
 
 ```
+
+
 
 ### Motivation
 I got bored of doing this:
