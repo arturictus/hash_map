@@ -124,6 +124,22 @@ class Collections < HashMap::Base
 end
 ```
 
+The collection method always treats the value as an `Array` and it always returns an `Array`. If the value is not an `Array` it will be wrapped in a new one. If the value is `nil` it always returns `[]`.
+
+```ruby
+Collections.map({ things: nil})
+=> {
+    things: []
+    numbers: []
+}
+
+Collections.map({ numbers: '1'})
+=> {
+   things: []
+   numbers: [1]
+}
+```
+
 **Methods:**
 
 You can create your helpers in the mapper and call them inside the block

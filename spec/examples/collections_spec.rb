@@ -20,19 +20,31 @@ describe 'Collections' do
       numbers: %w(1 2 3)
     }
   end
+
   subject { Collections.map(original) }
+
   describe ':things' do
     it { expect(subject[:things]).to match_array original[:things] }
   end
+
   describe ':numbers' do
     it { expect(subject[:numbers]).to match_array original[:numbers].map(&:to_i) }
   end
 
-  describe 'Errors' do
+  describe 'with a single element' do
+    let(:thing) { { name: 'one thing', age: 12 } }
+    let(:original){ { things: thing } }
+    it { expect(subject[:things]).to match_array [ thing ] }
+  end
+
+  describe 'when is nil' do
     let(:original){ { things: nil } }
-    it do
-      expect { subject }.to raise_error HashMap::Mapper::CanNotMapCollection
-    end
+    it { expect(subject[:things]).to eq [] }
+  end
+
+  describe 'when does not exist' do
+    let(:original){ { } }
+    it { expect(subject[:things]).to eq [] }
   end
 
   describe 'multiple blocks' do

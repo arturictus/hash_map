@@ -1,6 +1,5 @@
 module HashMap
   class Mapper
-    class CanNotMapCollection < StandardError; end
     attr_reader :original, :hash_map
     def initialize(original, hash_map)
       @original = HashWithIndifferentAccess.new(original)
@@ -31,14 +30,8 @@ module HashMap
 
     def map_collection(struct)
       value = get_value_from_key(struct)
-      errors_for_collection(value, struct)
+      value = Array.wrap(value)
       value.map { |elem| struct[:mapper].call(elem) }
-    end
-
-    def errors_for_collection(value, struct)
-      unless value.respond_to?(:map)
-        fail CanNotMapCollection, "'#{value.class}' does not respond to '#map'"
-      end
     end
 
     def get_value_from_key(struct, from = :from)
