@@ -22,6 +22,7 @@ module HashMap
 
   class DSL
     class NoMapperForCollection < StandardError; end
+    class InvalidOptionsForProperty < StandardError; end
     attr_reader :attributes
 
     def initialize
@@ -29,6 +30,7 @@ module HashMap
     end
 
     def property(key, opts = {}, &block)
+      fail InvalidOptionsForProperty, "[HashMap Error] using: `#{__callee__}` with wrong options, second argument must be a `Hash" unless opts.is_a? Hash
       new_hash = {}.tap { |h| h[:key] = single_to_ary(key) }
       new_hash[:proc] = block if block
       new_hash[:from] = generate_from(new_hash, opts)

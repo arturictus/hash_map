@@ -153,6 +153,15 @@ module HashMap
             end
           end.to raise_error DSL::NoMapperForCollection
         end
+
+        it do
+          expect do
+            class PropertyError
+              include ToDSL
+              property :hello, :baz
+            end
+          end.to raise_error DSL::InvalidOptionsForProperty
+        end
       end
     end
   end
