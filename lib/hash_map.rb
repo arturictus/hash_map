@@ -9,3 +9,7 @@ require 'hash_map/dsl'
 require 'hash_map/mapper'
 require 'hash_map/base'
 require 'hash_map/json_adapter'
+
+require 'hash_map/core_ext/hash'
+require 'hash_map/core_ext/string'
+
