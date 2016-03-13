@@ -64,5 +64,25 @@ module HashMap
       it { expect(subject['email']['address']).to eq  original['email']}
       it { expect(subject['email']['type']).to eq :work }
     end
+
+    describe 'JSON string' do
+      context 'Valid JSON' do
+        let(:original) { "{\"name\":\"Artur\",\"first_surname\":\"hello\",\"second_surname\":\"world\",\"address\":{\"postal_code\":12345,\"country\":{\"name\":\"Spain\",\"language\":\"ES\"}},\"email\":\"asdf@sdfs.com\",\"phone\":null}" }
+        let(:parsed_original) { JSON[original] }
+        it { expect(subject[:first_name]).to eq parsed_original['name'] }
+        it { expect(subject['first_name']).to eq parsed_original['name'] }
+        it { expect(subject['language']).to eq parsed_original['address']['country']['language'] }
+        it { expect(subject['last_name']).to eq  "#{parsed_original['first_surname']} #{parsed_original['second_surname']}"}
+        it { expect(subject['email']['address']).to eq  parsed_original['email']}
+        it { expect(subject['email']['type']).to eq :work }
+      end
+
+      context 'Invalid JSON' do
+        let(:original) { "{\"name\":\"Artur\", hello: nil}" }
+        it 'will fail with exception' do
+          expect{ subject }.to raise_error Mapper::InvalidJOSN
+        end
+      end
+    end
   end
 end

@@ -1,8 +1,9 @@
 module HashMap
   class Mapper
+    class InvalidJOSN < StandardError; end
     attr_reader :original, :hash_map
     def initialize(original, hash_map)
-      @original = HashWithIndifferentAccess.new(original)
+      @original = HashWithIndifferentAccess.new(check_for_type(original))
       @hash_map = hash_map
     end
 
@@ -59,6 +60,16 @@ module HashMap
 
     def nil_to_default(value, struct)
       value.nil? ? struct[:default] : value
+    end
+
+    def check_for_type(original)
+      original.is_a?(String) ? parse_json(original) : original
+    end
+
+    def parse_json(json)
+      JSON[json]
+    rescue JSON::ParserError => e
+      fail InvalidJOSN, "[HashMap Error] using: `map` with invalid JSON, please check your json before mapping"
     end
   end
 end
