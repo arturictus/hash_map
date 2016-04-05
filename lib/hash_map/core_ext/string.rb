@@ -4,6 +4,6 @@ class String
   # api_response = "{\"user\":{\"name\":\"John\",\"surname\":\"Doe\"}}"
   # api_response.hash_map_with(UserMapper)
   def hash_map_with(mapper)
-    HashMap::Mapper.new(self, mapper.new).output
+    mapper.call(self)
   end
 end
