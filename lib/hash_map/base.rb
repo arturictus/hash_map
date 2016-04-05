@@ -1,5 +1,5 @@
 module HashMap
-  Base = Struct.new(:original) do
+  class Base
     include ToDSL
     delegate :[], to: :output
 
@@ -8,7 +8,13 @@ module HashMap
     end
     singleton_class.send(:alias_method, :call, :map)
 
+    attr_accessor :original
+    def initialize(original)
+      @original = original
+    end
+
     def mapper
+      self.original = HashMap::JSONAdapter.call(original) if original.is_a? String
       @mapper ||= Mapper.new(original, self)
     end
 
