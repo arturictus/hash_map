@@ -7,7 +7,7 @@ class UserMapper < HashMap::Base
   end
 end
 
-describe 'Hash extesion' do
+describe 'String extesion' do
   let(:user_json) { "{\"name\":\"John\",\"social\":{\"email\":\"JohnWick@gmail.com\"}}" }
   let(:parsed_json) { JSON[user_json] }
   context 'Valid mapper' do
