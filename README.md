@@ -200,6 +200,42 @@ Blocks.map(hash)
 
 ```
 
+### JSON Adapter
+```ruby
+class UserMapper < HashMap::Base
+  from_child :user do
+    properties :name, :surname
+  end
+end
+json = %Q[{"user":{"name":"John","surname":"Doe"}}]
+UserMapper.map(json)
+# => {"name"=>"John", "surname"=>"Doe"}
+```
+### Core Extensions
+
+#### String
+```ruby
+class UserMapper < HashMap::Base
+  from_child :user do
+    properties :name, :surname
+  end
+end
+json = %Q[{"user":{"name":"John","surname":"Doe"}}]
+json.hash_map_with(UserMapper)
+# => {"name"=>"John", "surname"=>"Doe"}
+```
+#### Hash
+
+```ruby
+class UserMapper < HashMap::Base
+  from_child :user do
+    properties :name, :surname
+  end
+end
+hash = { user: { name: 'John', surname: 'Doe' } }
+hash.hash_map_with(UserMapper)
+# => {"name"=>"John", "surname"=>"Doe"}
+```
 
 
 ### Motivation
@@ -231,7 +267,7 @@ user.country = Country.find_by(code: user_hash[:country][:code])
 
 solution:
 ```ruby
-user = User.new(MyMapper.map(hash)) # done
+User.create(MyMapper.map(api_response)) # done
 ```
 
 ## Development
