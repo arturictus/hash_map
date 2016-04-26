@@ -1,5 +1,7 @@
 # HashMap
-[ ![Codeship Status for arturictus/hash_map](https://codeship.com/projects/5900adb0-7452-0133-84a1-52f3970f70f1/status?branch=master)](https://codeship.com/projects/117597)
+[![Build Status](https://travis-ci.org/arturictus/hash_map.svg?branch=master)](https://travis-ci.org/arturictus/hash_map)
+[![Gem Version](https://badge.fury.io/rb/hash_map.svg)](https://badge.fury.io/rb/hash_map)
+[![](https://img.shields.io/gem/dt/contextuable.svg?style=flat)](https://rubygems.org/gems/hash_map)
 
 HashMap is a small library that allow you to map hashes with style :).
 It will remove from your code many of the ugly navigation inside hashes to
