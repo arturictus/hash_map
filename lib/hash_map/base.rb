@@ -1,12 +1,19 @@
 module HashMap
   class Base
-    include ToDSL
     delegate :[], to: :output
 
     def self.map(input)
       new(input).output
     end
     singleton_class.send(:alias_method, :call, :map)
+
+    def self.inherited(subclass)
+      subclass.extend ToDSL
+      return unless self < HashMap::Base
+      unless self.dsl.attributes.empty?
+        subclass._set_attributes_from_inheritance(self.attributes)
+      end
+    end
 
     attr_reader :original
     def initialize(original)

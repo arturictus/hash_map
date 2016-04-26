@@ -1,22 +1,23 @@
 module HashMap
   module ToDSL
-    extend ActiveSupport::Concern
-    class_methods do
-      def method_missing(method, *args, &block)
-        if dsl.respond_to?(method)
-          dsl.send(method, *args, &block)
-        else
-          super
-        end
+    def method_missing(method, *args, &block)
+      if dsl.respond_to?(method)
+        dsl.send(method, *args, &block)
+      else
+        super
       end
+    end
 
-      def dsl
-        @dsl ||= DSL.new
-      end
+    def dsl
+      @dsl ||= DSL.new
+    end
 
-      def attributes
-        dsl.attributes
-      end
+    def attributes
+      dsl.attributes
+    end
+
+    def _set_attributes_from_inheritance(attrs)
+      dsl._set_attributes(attrs.dup)
     end
   end
 
@@ -27,6 +28,10 @@ module HashMap
 
     def initialize
       @attributes = []
+    end
+
+    def _set_attributes(attrs)
+      @attributes = attrs
     end
 
     def property(key, opts = {}, &block)
