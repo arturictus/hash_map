@@ -1,6 +1,6 @@
 require 'spec_helper'
 require File.join(HashMap.root, 'lib/hash_map/dsl')
-require 'pry'
+
 module HashMap
   describe DSL do
     def find_by_key(attrs, key)
@@ -13,7 +13,7 @@ module HashMap
     end
     describe 'Integration' do
       class TryDSL
-        include ToDSL
+        extend ToDSL
         property :first_name, from: :name
         property(:last_name) { |input| "#{input[:first_surname]} #{input[:second_surname]}" }
         property :language, from: [:country, :language], transform: proc {|context, value| value.downcase }
@@ -87,7 +87,7 @@ module HashMap
 
     describe 'properties' do
       class TryProperties
-        include ToDSL
+        extend ToDSL
         properties :name, :address, :house
       end
       let(:data_structure) do
@@ -115,7 +115,7 @@ module HashMap
     describe 'collection' do
       class Collectable; end
       class TryCollection
-        include ToDSL
+        extend ToDSL
         collection :collectable, mapper: Collectable
         collection :numbers, mapper: proc { |n| n.to_i }
       end
@@ -148,7 +148,7 @@ module HashMap
         it do
           expect do
             class CollectionErrors
-              include ToDSL
+              extend ToDSL
               collection :errors
             end
           end.to raise_error DSL::NoMapperForCollection
@@ -157,7 +157,7 @@ module HashMap
         it do
           expect do
             class PropertyError
-              include ToDSL
+              extend ToDSL
               property :hello, :baz
             end
           end.to raise_error DSL::InvalidOptionsForProperty

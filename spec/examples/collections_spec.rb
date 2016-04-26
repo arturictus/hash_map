@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'pry'
+
 describe 'Collections' do
   class Things < HashMap::Base
     properties :name, :age
