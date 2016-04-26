@@ -145,6 +145,33 @@ Collections.map({ numbers: '1'})
 }
 ```
 
+**Inheritance**
+When inheriting from a Mapper child will inherit the properties
+
+```ruby
+class UserMapper < HashMap::Base
+  properties :name, :lastname
+end
+
+class AdminMapper < UserMapper
+  properties :role, :company
+end
+
+original = {
+  name: 'John',
+  lastname: 'Doe',
+  role: 'Admin',
+  company: 'ACME'
+}
+
+UserMapper.map(original)
+#=> { name: 'John', lastname: 'Doe' }
+
+AdminMapper.map(original)
+#=> { name: 'John', lastname: 'Doe', role: 'Admin', company: 'ACME' }
+
+```
+
 **Methods:**
 
 You can create your helpers in the mapper and call them inside the block
