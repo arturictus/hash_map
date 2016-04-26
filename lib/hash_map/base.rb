@@ -10,8 +10,8 @@ module HashMap
     def self.inherited(subclass)
       subclass.extend ToDSL
       return unless self < HashMap::Base
-      unless self.dsl.attributes.empty?
-        subclass._set_attributes_from_inheritance(self.attributes)
+      unless dsl.attributes.empty?
+        subclass._set_attributes_from_inheritance(attributes)
       end
     end
 
