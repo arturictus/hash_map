@@ -3,7 +3,7 @@
 [![Gem Version](https://badge.fury.io/rb/hash_map.svg)](https://badge.fury.io/rb/hash_map)
 [![](https://img.shields.io/gem/dt/contextuable.svg?style=flat)](https://rubygems.org/gems/hash_map)
 [![Code Climate](https://codeclimate.com/github/arturictus/hash_map/badges/gpa.svg)](https://codeclimate.com/github/arturictus/hash_map)
-[![Test Coverage](https://codeclimate.com/github/arturictus/hash_map/badges/coverage.svg)](https://codeclimate.com/github/arturictus/hash_map/coverage)
+[![Coverage Status](https://coveralls.io/repos/github/arturictus/hash_map/badge.svg?branch=master)](https://coveralls.io/github/arturictus/hash_map?branch=master)
 [![Issue Count](https://codeclimate.com/github/arturictus/hash_map/badges/issue_count.svg)](https://codeclimate.com/github/arturictus/hash_map)
 
 HashMap is a small library that allow you to map hashes with style :).
