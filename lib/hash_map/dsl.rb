@@ -30,6 +30,11 @@ module HashMap
       @attributes = []
     end
 
+    def after_each(*middlewares)
+      @after_each ||= []
+      @after_each += middlewares
+    end
+
     def _set_attributes(attrs)
       @attributes = attrs
     end

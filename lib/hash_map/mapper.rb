@@ -28,6 +28,18 @@ module HashMap
       nil_to_default(value, struct)
     end
 
+    def after_each_middleware(value, key)
+      after_each_callbacks.inject(value) do |output, middle|
+        middle.call(output)
+      end
+    end
+
+    def after_each_callbacks
+      hash_map.class.dsl.after_each
+    rescue
+      []
+    end
+
     def map_collection(struct)
       value = get_value_from_key(struct)
       value = Array.wrap(value)
@@ -35,20 +47,22 @@ module HashMap
     end
 
     def get_value_from_key(struct, from = :from)
-      struct[from].inject(original) do |output, k|
+      value = struct[from].inject(original) do |output, k|
         break unless output.respond_to?(:[])
         output.send(:[], k)
       end
+      after_each_middleware(value, struct[:key].last)
     end
 
     def execute_block(struct)
       block = struct[:proc]
-      if struct[:from_child]
+      value = if struct[:from_child]
         nested = get_value_from_key(struct, :from_child)
         hash_map.instance_exec nested, original, &block
       else
         hash_map.instance_exec original, original, &block
       end
+      after_each_middleware(value, struct[:key].last)
     end
 
     def build_keys(ary, value)
