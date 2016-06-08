@@ -232,6 +232,99 @@ Blocks.map(hash)
 
 ```
 
+### Middlewares
+
+#### transforms_output
+```ruby
+original = {
+  "StatusCode" => 200,
+  "ErrorDescription" => nil,
+  "Messages" => nil,
+  "CompanySettings" => {
+    "CompanyIdentity" => {
+      "CompanyGuid" => "0A6005FA-161D-4290-BB7D-B21B14313807",
+      "PseudoCity" => {
+        "Code" => "PARTQ2447"
+      }
+    },
+    "IsCertifyEnabled" => false,
+    "IsProfileEnabled" => true,
+    "PathMobileConfig" => nil
+  }
+}
+
+class TransformsOutput < HashMap::Base
+  transforms_output  HashMap::UnderscoreKeys
+  from_child 'CompanySettings' do
+    from_child 'CompanyIdentity' do
+      property 'CompanyGuid'
+    end
+    properties 'IsCertifyEnabled', 'IsProfileEnabled', 'PathMobileConfig'
+  end
+end
+
+TransformsOutput.call(original)
+# => {:company_guid=>"0A6005FA-161D-4290-BB7D-B21B14313807", :is_certify_enabled=>false, :is_profile_enabled=>true, :path_mobile_config=>nil}
+```
+
+#### Transforms input
+
+```ruby
+original = {
+  "StatusCode" => 200,
+  "ErrorDescription" => nil,
+  "Messages" => nil,
+  "CompanySettings" => {
+    "CompanyIdentity" => {
+      "CompanyGuid" => "0A6005FA-161D-4290-BB7D-B21B14313807",
+      "PseudoCity" => {
+        "Code" => "PARTQ2447"
+      }
+    },
+    "IsCertifyEnabled" => false,
+    "IsProfileEnabled" => true,
+    "PathMobileConfig" => nil
+  }
+}
+
+class TransformsInput < HashMap::Base
+  transforms_input  HashMap::UnderscoreKeys
+  from_child :company_settings do
+    from_child :company_identity do
+      property :company_guid
+    end
+    properties :is_certify_enabled, :is_profile_enabled, :path_mobile_config
+  end
+end
+
+TransformsInput.call(original)
+# => {:company_guid=>"0A6005FA-161D-4290-BB7D-B21B14313807", :is_certify_enabled=>false, :is_profile_enabled=>true, :path_mobile_config=>nil}
+```
+
+
+#### After each
+
+```ruby
+class AfterEach < HashMap::Base
+  properties :name, :age
+  after_each HashMap::BlankToNil, HashMap::StringToBoolean
+end
+
+blanks = {
+  name: '',
+  age: ''
+}
+booleans = {
+  name: 'true',
+  age: 'false'
+}
+AfterEach.call(blanks)
+#=> {"name"=>nil, "age"=>nil}
+
+AfterEach.call(booleans)
+#=> {"name"=>true, "age"=>false}
+```
+
 ### JSON Adapter
 ```ruby
 class UserMapper < HashMap::Base

@@ -35,6 +35,16 @@ module HashMap
       @after_each += middlewares
     end
 
+    def transforms_output(*middlewares)
+      @transform_output ||= []
+      @transform_output += middlewares
+    end
+
+    def transforms_input(*middlewares)
+      @transform_input ||= []
+      @transform_input += middlewares
+    end
+
     def _set_attributes(attrs)
       @attributes = attrs
     end

@@ -17,7 +17,7 @@ module HashMap
 
     attr_reader :original
     def initialize(original)
-      @original = prepare_input(original)
+      @original = _transforms_input(prepare_input(original))
     end
 
     def mapper
@@ -25,12 +25,32 @@ module HashMap
     end
 
     def output
-      @output ||= mapper.output
+      @output ||= _transforms_output(mapper.output)
     end
     alias_method :to_h, :output
     alias_method :to_hash, :output
 
     private
+
+    def _transforms_output(output)
+      if middlewares = self.class.dsl.instance_variable_get(:@transform_output)
+        middlewares.inject(output) do |out, proccess|
+          proccess.call(out)
+        end
+      else
+        output
+      end
+    end
+
+    def _transforms_input(input)
+      if middlewares = self.class.dsl.instance_variable_get(:@transform_input)
+        middlewares.inject(input) do |out, proccess|
+          proccess.call(out)
+        end
+      else
+        input
+      end
+    end
 
     def prepare_input(input)
       case input

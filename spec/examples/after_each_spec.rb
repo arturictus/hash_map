@@ -1,18 +1,10 @@
 require 'spec_helper'
 
 describe 'after_each' do
-  BlankToNil = lambda do |v|
-    v.blank? ? nil : v
-  end
-  StringToBoolean = lambda do |v|
-    return false if v == 'false'
-    return true if v == 'true'
-    v
-  end
 
   class AfterEach < HashMap::Base
     properties :name, :age
-    after_each BlankToNil, StringToBoolean
+    after_each HashMap::BlankToNil, HashMap::StringToBoolean
   end
 
   describe 'blank to nil' do
