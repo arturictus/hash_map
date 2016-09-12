@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe 'TransformOutput' do
-
   class TransformsOutput < HashMap::Base
-    transforms_output  HashMap::UnderscoreKeys
+    transforms_output HashMap::UnderscoreKeys
+
     from_child 'CompanySettings' do
       from_child 'CompanyIdentity' do
         property 'CompanyGuid'
@@ -38,9 +38,9 @@ describe 'TransformOutput' do
 end
 
 describe 'TransformsInput' do
-
   class TransformsInput < HashMap::Base
-    transforms_input  HashMap::UnderscoreKeys
+    transforms_input HashMap::UnderscoreKeys
+
     from_child :company_settings do
       from_child :company_identity do
         property :company_guid

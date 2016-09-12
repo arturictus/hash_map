@@ -28,7 +28,7 @@ module HashMap
       nil_to_default(value, struct)
     end
 
-    def after_each_middleware(value, key)
+    def after_each_middleware(value, _key)
       after_each_callbacks.inject(value) do |output, middle|
         middle.call(output)
       end
@@ -57,11 +57,11 @@ module HashMap
     def execute_block(struct)
       block = struct[:proc]
       value = if struct[:from_child]
-        nested = get_value_from_key(struct, :from_child)
-        hash_map.instance_exec nested, original, &block
-      else
-        hash_map.instance_exec original, original, &block
-      end
+                nested = get_value_from_key(struct, :from_child)
+                hash_map.instance_exec nested, original, &block
+              else
+                hash_map.instance_exec original, original, &block
+              end
       after_each_middleware(value, struct[:key].last)
     end
 

@@ -33,7 +33,8 @@ module HashMap
     private
 
     def _transforms_output(output)
-      if middlewares = self.class.dsl.instance_variable_get(:@transform_output)
+      middlewares = self.class.dsl.instance_variable_get(:@transform_output)
+      if middlewares
         middlewares.inject(output) do |out, proccess|
           proccess.call(out)
         end
@@ -43,7 +44,8 @@ module HashMap
     end
 
     def _transforms_input(input)
-      if middlewares = self.class.dsl.instance_variable_get(:@transform_input)
+      middlewares = self.class.dsl.instance_variable_get(:@transform_input)
+      if middlewares
         middlewares.inject(input) do |out, proccess|
           proccess.call(out)
         end

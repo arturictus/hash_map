@@ -17,7 +17,7 @@ module HashMap
 
       def matches?(hash)
         @mapped_hash = hash
-        _has_key && _from && is_equal
+        _has_key && _from && equality
       end
 
       def description
@@ -28,9 +28,9 @@ module HashMap
         failure_messages.join(', ')
       end
 
-
       def from(original_hash, *from_key)
-        @original_hash, @from_key = original_hash, from_key
+        @original_hash = original_hash
+        @from_key = from_key
         self
       end
 
@@ -107,7 +107,7 @@ module HashMap
         k.is_a?(Symbol) ? ":#{k}" : "'#{k}'"
       end
 
-      def is_equal
+      def equality
         return true unless expected_provided
         if mapped_value == expected
           description_messages << "and eq `#{expected}`"
@@ -121,7 +121,7 @@ module HashMap
         keys.inject({ value: hash, has_key: true }) do |out, key|
           return { value: nil, has_key: false } unless out[:value]
           return { value: nil, has_key: false } unless out[:has_key]
-          { value: out[:value][key], has_key: out[:value].has_key?(key) }
+          { value: out[:value][key], has_key: out[:value].key?(key) }
         end
       end
     end

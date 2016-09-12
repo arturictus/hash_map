@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'after_each' do
-
   class AfterEach < HashMap::Base
     properties :name, :age
     after_each HashMap::BlankToNil, HashMap::StringToBoolean
