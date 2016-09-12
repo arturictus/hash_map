@@ -34,30 +34,28 @@ module HashMap
 
     def _transforms_output(output)
       middlewares = self.class.dsl.instance_variable_get(:@transform_output)
-      if middlewares
-        middlewares.inject(output) do |out, proccess|
-          proccess.call(out)
-        end
-      else
-        output
-      end
+      run_middlewares(middlewares, output)
     end
 
     def _transforms_input(input)
       middlewares = self.class.dsl.instance_variable_get(:@transform_input)
-      if middlewares
-        middlewares.inject(input) do |out, proccess|
-          proccess.call(out)
-        end
-      else
-        input
-      end
+      run_middlewares(middlewares, input)
     end
 
     def prepare_input(input)
       case input
       when ->(str) { str.class <= String }
         JSONAdapter.call(input)
+      else
+        input
+      end
+    end
+
+    def run_middlewares(middlewares, input)
+      if middlewares
+        middlewares.inject(input) do |out, proccess|
+          proccess.call(out)
+        end
       else
         input
       end
