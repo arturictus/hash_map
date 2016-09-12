@@ -362,6 +362,48 @@ hash.hash_map_with(UserMapper)
 # => {"name"=>"John", "surname"=>"Doe"}
 ```
 
+### Testing
+
+#### RSpec
+
+__hash_mapped__
+
+```ruby
+it do
+  output = { name: :hello }
+  expect(output).to hash_mapped(:name)
+end
+```
+
+`from`
+```ruby
+it do
+  original = { first_name: :hello }
+  output = { name: :hello }
+  expect(output).to hash_mapped(:name).from(original, :first_name)
+end
+
+it do
+  original = { user: { first_name: :hello } }
+  output = { name: :hello }
+  expect(output).to hash_mapped(:name).from(original, :user, :first_name)
+end
+
+it do
+  original = { user: { first_name: :hello } }
+  output = { user: { name: :hello } }
+  expect(output).to hash_mapped(:user, :name).from(original, :user, :first_name)
+end
+```
+
+`and_eq`
+
+```ruby
+it do
+  output = { user: { name: :hello } }
+  expect(output).to hash_mapped(:user, :name).and_eq(:hello)
+end
+```
 
 ### Motivation
 I got bored of doing this:
