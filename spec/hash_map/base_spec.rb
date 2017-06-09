@@ -18,7 +18,6 @@ module HashMap
       }
     end
 
-
     describe 'Options' do
       let(:company) do
         {
@@ -30,7 +29,7 @@ module HashMap
       class OptionMapper < HashMap::Base
         property :first_name, from: :name
 
-        property :company_name do |input|
+        property :company_name do
           options[:company_name]
         end
       end
@@ -39,7 +38,6 @@ module HashMap
       it { expect(subject[:first_name]).to eq original[:name] }
       it { expect(subject[:company_name]).to eq company[:company_name] }
     end
-
 
     class ProfileMapper < HashMap::Base
       property :first_name, from: :name
