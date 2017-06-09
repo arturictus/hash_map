@@ -144,6 +144,22 @@ Collections.map({ numbers: '1'})
    numbers: [1]
 }
 ```
+**Options**
+Adding a second argument will make it available with the name `options`
+
+```ruby
+class UserMapper < HashMap::Base
+  properties :name, :lastname
+  property :company_name do
+    options[:company_name]
+  end
+end
+
+user = {name: :name, lastname: :lastname}
+
+UserMapper.map(user, company_name: :foo)
+#=> {"name"=>:name, "lastname"=>:lastname, "company_name"=>:foo}
+```
 
 **Inheritance**
 When inheriting from a Mapper child will inherit the properties
