@@ -2,8 +2,8 @@ module HashMap
   class Base
     delegate :[], to: :output
 
-    def self.map(input)
-      new(input).output
+    def self.map(*args)
+      new(*args).output
     end
     singleton_class.send(:alias_method, :call, :map)
 
@@ -15,9 +15,10 @@ module HashMap
       end
     end
 
-    attr_reader :original
-    def initialize(original)
+    attr_reader :original, :options
+    def initialize(original, options = {})
       @original = _transforms_input(prepare_input(original))
+      @options = options
     end
 
     def mapper
