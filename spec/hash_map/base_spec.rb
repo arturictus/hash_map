@@ -18,6 +18,27 @@ module HashMap
       }
     end
 
+    describe 'Options' do
+      let(:company) do
+        {
+          company_name: 'Super Company',
+          company_phone: '+34658149869'
+        }
+      end
+
+      class OptionMapper < HashMap::Base
+        property :first_name, from: :name
+
+        property :company_name do
+          options[:company_name]
+        end
+      end
+
+      subject { OptionMapper.call(original, company)}
+      it { expect(subject[:first_name]).to eq original[:name] }
+      it { expect(subject[:company_name]).to eq company[:company_name] }
+    end
+
     class ProfileMapper < HashMap::Base
       property :first_name, from: :name
       property :last_name do |input|
