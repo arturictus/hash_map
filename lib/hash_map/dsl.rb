@@ -77,11 +77,16 @@ module HashMap
       from_child(key, opts, &block)
     end
 
-    def from_child(key, opts = {}, &block)
-      flat = _nested(key, opts, &block)
+    def from_child(*args, &block)
+      options = args.last.is_a?(::Hash) ? args.pop : {}
+      key = args
+      flat = _nested(key, options, &block)
+      keys = Array.wrap(key)
       flat.each do |attr|
-        attr[:from].unshift(key)
-        attr[:from_child] ? attr[:from_child].unshift(key) : attr[:from_child] = [key]
+        keys.reverse.each do |k|
+          attr[:from].unshift(k)
+          attr[:from_child] ? attr[:from_child].unshift(k) : attr[:from_child] = [k]
+        end
       end
       @attributes += flat
     end
