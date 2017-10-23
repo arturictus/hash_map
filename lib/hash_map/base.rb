@@ -1,6 +1,5 @@
 module HashMap
   class Base
-    delegate :[], to: :output
 
     def self.map(*args)
       new(*args).output
@@ -30,6 +29,13 @@ module HashMap
     end
     alias_method :to_h, :output
     alias_method :to_hash, :output
+    alias_method :call, :output
+    alias_method :execute, :output
+
+
+    def [](key)
+      output[key]
+    end
 
     private
 

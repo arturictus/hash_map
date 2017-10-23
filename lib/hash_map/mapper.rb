@@ -2,15 +2,15 @@ module HashMap
   class Mapper
     attr_reader :original, :hash_map
     def initialize(original, hash_map)
-      @original = HashWithIndifferentAccess.new(original)
+      @original = Fusu::HashWithIndifferentAccess.new(original)
       @hash_map = hash_map
     end
 
     def output
-      new_hash = HashWithIndifferentAccess.new
+      new_hash = Fusu::HashWithIndifferentAccess.new
       hash_map.class.attributes.each do |struc|
         value = get_value(struc)
-        new_hash.deep_merge! build_keys(struc[:key], value)
+        Fusu::Hash.deep_merge!(new_hash, build_keys(struc[:key], value))
       end
       new_hash
     end
@@ -42,7 +42,7 @@ module HashMap
 
     def map_collection(struct)
       value = get_value_from_key(struct)
-      value = Array.wrap(value)
+      value = Fusu::Array.wrap(value)
       value.map { |elem| struct[:mapper].call(elem) }
     end
 
@@ -67,7 +67,7 @@ module HashMap
 
     def build_keys(ary, value)
       ary.reverse.inject(value) do |a, n|
-        HashWithIndifferentAccess.new(n => a)
+        Fusu::HashWithIndifferentAccess.new(n => a)
       end
     end
 

@@ -77,7 +77,10 @@ module HashMap
         let(:parsed_original) { JSON[original] }
         it { expect(subject[:first_name]).to eq parsed_original['name'] }
         it { expect(subject['first_name']).to eq parsed_original['name'] }
-        it { expect(subject['language']).to eq parsed_original['address']['country']['language'] }
+        it {
+          binding.pry
+          expect(subject['language']).to eq parsed_original['address']['country']['language']
+        }
         it { expect(subject['last_name']).to eq  "#{parsed_original['first_surname']} #{parsed_original['second_surname']}"}
         it { expect(subject['email']['address']).to eq  parsed_original['email']}
         it { expect(subject['email']['type']).to eq :work }

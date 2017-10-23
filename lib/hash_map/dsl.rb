@@ -54,7 +54,7 @@ module HashMap
       new_hash = {}.tap { |h| h[:key] = single_to_ary(key) }
       new_hash[:proc] = block if block
       new_hash[:from] = generate_from(new_hash, opts)
-      attributes << new_hash.merge!(opts.except(:from))
+      attributes << new_hash.merge!(Fusu::Hash.except(opts, :from))
       new_hash
     end
 
@@ -81,7 +81,7 @@ module HashMap
       options = args.last.is_a?(::Hash) ? args.pop : {}
       key = args
       flat = _nested(key, options, &block)
-      keys = Array.wrap(key)
+      keys = Fusu::Array.wrap(key)
       flat.each do |attr|
         keys.reverse.each do |k|
           attr[:from].unshift(k)
@@ -116,7 +116,7 @@ module HashMap
     end
 
     def single_to_ary(elem)
-      Array.wrap(elem)
+      Fusu::Array.wrap(elem)
     end
   end
 end

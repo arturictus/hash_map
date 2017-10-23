@@ -1,6 +1,6 @@
 module HashMap
   BlankToNil = lambda do |v|
-    v.blank? ? nil : v
+    Fusu.blank?(v) ? nil : v
   end
 
   StringToBoolean = lambda do |v|
@@ -10,6 +10,6 @@ module HashMap
   end
 
   UnderscoreKeys = lambda do |output|
-    output.deep_transform_keys{ |k| k.underscore.to_sym }
+    Fusu::Hash.deep_transform_keys(output){ |k| Fusu::String.underscore(k).to_sym }
   end
 end

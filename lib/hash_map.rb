@@ -1,5 +1,5 @@
 require 'hash_map/version'
-require 'active_support/all'
+require 'fusu'
 module HashMap
   def self.root
     File.expand_path '../..', __FILE__

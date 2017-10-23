@@ -48,39 +48,39 @@ module HashMap
       let(:attributes) { const.attributes }
       it { expect(attributes.first).to eq data_structure.first }
       it do
-        expect(find_by_key(attributes, [:last_name]).try(:[], :proc))
+        expect(Fusu.try(find_by_key(attributes, [:last_name]), :[], :proc))
           .to be_a Proc
       end
       it do
-        expect(find_by_key(attributes, [:language]).try(:[], :from))
+        expect(Fusu.try(find_by_key(attributes, [:language]), :[], :from))
           .to eq(find_by_key(data_structure, [:language])[:from])
       end
       it do
-        expect(find_by_key(attributes, [:language]).try(:[], :transform))
+        expect(Fusu.try(find_by_key(attributes, [:language]), :[], :transform))
           .to be_a Proc
       end
       it do
-        expect(find_by_key(attributes, [:country_name]).try(:[], :from))
+        expect(Fusu.try(find_by_key(attributes, [:country_name]), :[], :from))
           .to eq(find_by_key(data_structure, [:country_name])[:from])
       end
       it do
-        expect(find_by_key(attributes, [:code]).try(:[], :from))
+        expect(Fusu.try(find_by_key(attributes, [:code]), :[], :from))
           .to eq(find_by_key(data_structure, [:code])[:from])
       end
       it do
-        expect(find_by_key(attributes, [:email, :address]).try(:[], :from))
+        expect(Fusu.try(find_by_key(attributes, [:email, :address]), :[], :from))
           .to eq(find_by_key(data_structure, [:email, :address])[:from])
       end
       it do
-        expect(find_by_key(attributes, [:code]).try(:[], :from))
+        expect(Fusu.try(find_by_key(attributes, [:code]), :[], :from))
           .to eq(find_by_key(data_structure, [:code])[:from])
       end
       it do
-        expect(find_by_key(attributes, [:email, :type]).try(:[], :from))
+        expect(Fusu.try(find_by_key(attributes, [:email, :type]), :[], :from))
           .to eq(find_by_key(data_structure, [:email, :type])[:from])
       end
       it do
-        expect(find_by_key(attributes, [:email, :type]).try(:[], :default))
+        expect(Fusu.try(find_by_key(attributes, [:email, :type]), :[], :default))
           .to eq(find_by_key(data_structure, [:email, :type])[:default])
       end
     end
@@ -100,15 +100,15 @@ module HashMap
       let(:const) { TryProperties }
       let(:attributes) { const.attributes }
       it do
-        expect(find_by_key(attributes, [:name]).try(:[], :from))
+        expect(Fusu.try(find_by_key(attributes, [:name]), :[], :from))
           .to eq(find_by_key(data_structure, [:name])[:from])
       end
       it do
-        expect(find_by_key(attributes, [:address]).try(:[], :from))
+        expect(Fusu.try(find_by_key(attributes, [:address]), :[], :from))
           .to eq(find_by_key(data_structure, [:address])[:from])
       end
       it do
-        expect(find_by_key(attributes, [:house]).try(:[], :from))
+        expect(Fusu.try(find_by_key(attributes, [:house]), :[], :from))
           .to eq(find_by_key(data_structure, [:house])[:from])
       end
     end
@@ -129,19 +129,19 @@ module HashMap
       let(:const) { TryCollection }
       let(:attributes) { const.attributes }
       it do
-        expect(find_by_key(attributes, [:collectable]).try(:[], :mapper))
+        expect(Fusu.try(find_by_key(attributes, [:collectable]),:[], :mapper))
           .to eq(find_by_key(data_structure, [:collectable])[:mapper])
       end
       it do
-        expect(find_by_key(attributes, [:collectable]).try(:[], :is_collection))
+        expect(Fusu.try(find_by_key(attributes, [:collectable]),:[], :is_collection))
           .to eq(find_by_key(data_structure, [:collectable])[:is_collection])
       end
       it do
-        expect(find_by_key(attributes, [:numbers]).try(:[], :is_collection))
+        expect(Fusu.try(find_by_key(attributes, [:numbers]),:[], :is_collection))
           .to eq(find_by_key(data_structure, [:numbers])[:is_collection])
       end
       it do
-        expect(find_by_key(attributes, [:numbers]).try(:[], :mapper))
+        expect(Fusu.try(find_by_key(attributes, [:numbers]),:[], :mapper))
           .to be_a(Proc)
       end
       describe 'errors' do
