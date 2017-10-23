@@ -93,7 +93,7 @@ ProfileMapper.map(original)
 }
 ```
 **IMPORTANT:**
-- The **output** is a **HashWithIndifferentAccess** you can access the values with strings or symbols.
+- The **output** is a **Fusu::HashWithIndifferentAccess** you can access the values with strings or symbols.
 - The input is transformed as well, that's why you do not need to use strings.
 
 Enjoy!
@@ -374,31 +374,6 @@ class UserMapper < HashMap::Base
 end
 json = %Q[{"user":{"name":"John","surname":"Doe"}}]
 UserMapper.map(json)
-# => {"name"=>"John", "surname"=>"Doe"}
-```
-### Core Extensions
-
-#### String
-```ruby
-class UserMapper < HashMap::Base
-  from_child :user do
-    properties :name, :surname
-  end
-end
-json = %Q[{"user":{"name":"John","surname":"Doe"}}]
-json.hash_map_with(UserMapper)
-# => {"name"=>"John", "surname"=>"Doe"}
-```
-#### Hash
-
-```ruby
-class UserMapper < HashMap::Base
-  from_child :user do
-    properties :name, :surname
-  end
-end
-hash = { user: { name: 'John', surname: 'Doe' } }
-hash.hash_map_with(UserMapper)
 # => {"name"=>"John", "surname"=>"Doe"}
 ```
 
