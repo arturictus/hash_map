@@ -45,8 +45,7 @@ module HashMap
         "#{input[:first_surname]} #{input[:second_surname]}"
       end
       property :language,
-               from: [:address, :country, :language],
-               transform: proc { |_, value| value.downcase }
+               from: [:address, :country, :language]
 
       from_child :address do
         property :code, from: :postal_code
@@ -78,7 +77,6 @@ module HashMap
         it { expect(subject[:first_name]).to eq parsed_original['name'] }
         it { expect(subject['first_name']).to eq parsed_original['name'] }
         it {
-          binding.pry
           expect(subject['language']).to eq parsed_original['address']['country']['language']
         }
         it { expect(subject['last_name']).to eq  "#{parsed_original['first_surname']} #{parsed_original['second_surname']}"}
