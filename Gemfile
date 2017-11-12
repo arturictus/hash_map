@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 # Specify your gem's dependencies in hash_map.gemspec
 gemspec
-gem 'fusu', path: '/Users/arturpanach/code/gems/fusu'
 
 group :development, :test do
   gem 'simplecov', require: false
