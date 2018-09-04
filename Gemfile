@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 gemspec
 
 group :development, :test do
+  gem 'rails', '~> 5.2'
   gem 'simplecov', require: false
   gem 'rubocop', '~> 0.37.2', require: false unless RUBY_VERSION =~ /^1.8/
   gem 'coveralls', require: false
