@@ -48,6 +48,9 @@ describe 'middlewares' do
         v.is_a?(HashMap::KeyNotProvided)
       })
     end
+    it do
+      expect{ subject.to_json }.not_to raise_error
+    end
   end
   describe RemoveUnprovidedMapper do
     subject { described_class.call(input) }
@@ -59,7 +62,6 @@ describe 'middlewares' do
       expect(subject).to hash_mapped(:block).and_eq("hello")
       expect(subject).to hash_mapped(:another_block).and_eq("hello")
       expect(subject).to hash_mapped(:company, :name).from(input, :company_name)
-      binding.pry
       expect(subject).not_to hash_mapped(:company, :code)
       expect(subject).not_to hash_mapped(:number)
     end

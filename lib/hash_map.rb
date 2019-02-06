@@ -12,8 +12,20 @@ module HashMap
     def to_json
       nil
     end
-    def as_json
+    def as_json(arg = nil)
       nil
+    end
+  end
+
+  def self.deep_reject(hash, &block)
+    hash.each_with_object(Fusu::HashWithIndifferentAccess.new) do |(k, v), memo|
+      unless block.call(k, v)
+        if v.is_a?(Hash)
+          memo[k] = deep_reject(v, &block)
+        else
+          memo[k] = v
+        end
+      end
     end
   end
 end
