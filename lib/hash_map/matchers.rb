@@ -40,6 +40,10 @@ module HashMap
         self
       end
 
+      def failure_message_when_negated
+        "expect to not #{description}"
+      end
+
       private
 
       def mapped_has_key?
@@ -109,11 +113,19 @@ module HashMap
 
       def equality
         return true unless expected_provided
-        if mapped_value == expected
+        if matches_equality?(mapped_value, expected)
           description_messages << "and eq `#{expected}`"
         else
           failure_messages << "key #{key_to_message} expected to eq `#{expected}`"
           false
+        end
+      end
+
+      def matches_equality?(value, expected)
+        if expected.is_a?(Proc)
+          expected.call(value)
+        else
+          value == expected
         end
       end
 

@@ -1,4 +1,38 @@
 module HashMap
+  class AfterEachContext
+    attr_reader :original, :struct, :value
+    def initialize(original, struct, value)
+      @original = original
+      @struct = struct
+      @value = value
+    end
+
+    def provided?
+      has_key?
+    end
+
+    def has_key?
+      found = true
+      return true unless struct.is_a?(Hash)
+      struct[:from].reduce(original) do |prv, nxt|
+        unless prv.respond_to?(:key?)
+          found = false
+          break
+        end
+        unless prv.key?(nxt)
+          found = false
+          break
+        end
+        begin
+          prv.send(:[], nxt)
+        rescue
+          found = false
+        end
+      end
+      found
+    end
+  end
+
   class Mapper
     attr_reader :original, :hash_map
     def initialize(original, hash_map)
@@ -28,9 +62,10 @@ module HashMap
       nil_to_default(value, struct)
     end
 
-    def after_each_middleware(value, _key)
+    def after_each_middleware(value, struct)
+      contx = AfterEachContext.new(original, struct, value)
       after_each_callbacks.inject(value) do |output, middle|
-        middle.call(output)
+        middle.call(output, contx)
       end
     end
 
@@ -51,7 +86,7 @@ module HashMap
         break unless output.respond_to?(:[])
         output.send(:[], k)
       end
-      after_each_middleware(value, struct[:key].last)
+      after_each_middleware(value, struct)
     end
 
     def execute_block(struct)

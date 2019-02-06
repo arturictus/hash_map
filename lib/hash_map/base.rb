@@ -10,7 +10,7 @@ module HashMap
       subclass.extend ToDSL
       return unless self < HashMap::Base
       unless dsl.attributes.empty?
-        subclass._set_attributes_from_inheritance(attributes)
+        subclass._set_attributes_from_inheritance(attributes.deep_dup)
       end
     end
 
