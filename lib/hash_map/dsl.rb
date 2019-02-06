@@ -45,6 +45,13 @@ module HashMap
       @transform_input += middlewares
     end
 
+    def only_provided_keys
+      @transform_output ||= []
+      @transform_output << RemoveUnprovideds
+      @after_each ||= []
+      @after_each << MarkUnprovided
+    end
+
     def _set_attributes(attrs)
       @attributes = attrs
     end

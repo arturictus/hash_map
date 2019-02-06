@@ -21,8 +21,7 @@ class MarkUnprovidedMapper < HashMap::Base
 end
 
 class RemoveUnprovidedMapper < MarkUnprovidedMapper
-  after_each HashMap::MarkUnprovided
-  transforms_output HashMap::RemoveUnprovideds
+  only_provided_keys
 end
 
 
