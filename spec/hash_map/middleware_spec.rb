@@ -83,7 +83,6 @@ describe 'middlewares' do
       input = { name: "john", address: {street: "Batu Mejan" }, phone: nil }
       reg = RegularMapper.call(input)
       only = OnlyProvidedKeysMapper.call(input)
-      binding.pry
       expect(reg).to hash_mapped('lastname').and_eq(nil)
       expect(reg).to hash_mapped(:phone).and_eq(nil)
       expect(reg).to hash_mapped(:address, :number).and_eq(nil)
