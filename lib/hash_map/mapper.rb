@@ -1,38 +1,4 @@
 module HashMap
-  class AfterEachContext
-    attr_reader :original, :struct, :value
-    def initialize(original, struct, value)
-      @original = original
-      @struct = struct
-      @value = value
-    end
-
-    def provided?
-      has_key?
-    end
-
-    def has_key?
-      found = true
-      return true unless struct.is_a?(Hash)
-      struct[:from].reduce(original) do |prv, nxt|
-        unless prv.respond_to?(:key?)
-          found = false
-          break
-        end
-        unless prv.key?(nxt)
-          found = false
-          break
-        end
-        begin
-          prv.send(:[], nxt)
-        rescue
-          found = false
-        end
-      end
-      found
-    end
-  end
-
   class Mapper
     attr_reader :original, :hash_map
     def initialize(original, hash_map)
@@ -97,7 +63,7 @@ module HashMap
               else
                 hash_map.instance_exec original, original, &block
               end
-      after_each_middleware(value, struct[:key].last)
+      after_each_middleware(value, struct)
     end
 
     def build_keys(ary, value)

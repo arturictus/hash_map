@@ -30,6 +30,7 @@ module HashMap
   end
 end
 require 'hash_map/dsl'
+require 'hash_map/after_each_context'
 require 'hash_map/mapper'
 require 'hash_map/base'
 require 'hash_map/json_adapter'

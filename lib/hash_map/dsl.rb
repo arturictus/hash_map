@@ -17,7 +17,7 @@ module HashMap
     end
 
     def _set_attributes_from_inheritance(attrs)
-      dsl._set_attributes(attrs.dup)
+      dsl._set_attributes(attrs.deep_dup)
     end
   end
 
@@ -28,27 +28,25 @@ module HashMap
 
     def initialize
       @attributes = []
+      @after_each = Set.new
+      @transform_output = Set.new
+      @transform_input = Set.new
     end
 
     def after_each(*middlewares)
-      @after_each ||= []
       @after_each += middlewares
     end
 
     def transforms_output(*middlewares)
-      @transform_output ||= []
       @transform_output += middlewares
     end
 
     def transforms_input(*middlewares)
-      @transform_input ||= []
       @transform_input += middlewares
     end
 
     def only_provided_keys
-      @transform_output ||= []
       @transform_output << RemoveUnprovideds
-      @after_each ||= []
       @after_each << MarkUnprovided
     end
 
