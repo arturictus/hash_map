@@ -28,9 +28,10 @@ module HashMap
       nil_to_default(value, struct)
     end
 
-    def after_each_middleware(value, _key)
+    def after_each_middleware(value, struct)
+      contx = AfterEachContext.new(original, struct, value)
       after_each_callbacks.inject(value) do |output, middle|
-        middle.call(output)
+        middle.call(output, contx)
       end
     end
 
@@ -51,7 +52,7 @@ module HashMap
         break unless output.respond_to?(:[])
         output.send(:[], k)
       end
-      after_each_middleware(value, struct[:key].last)
+      after_each_middleware(value, struct)
     end
 
     def execute_block(struct)
@@ -62,7 +63,7 @@ module HashMap
               else
                 hash_map.instance_exec original, original, &block
               end
-      after_each_middleware(value, struct[:key].last)
+      after_each_middleware(value, struct)
     end
 
     def build_keys(ary, value)
