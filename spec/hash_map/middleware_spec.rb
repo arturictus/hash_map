@@ -65,4 +65,31 @@ describe 'middlewares' do
       expect(subject).not_to hash_mapped(:number)
     end
   end
+
+  describe 'doc example' do
+    class RegularMapper < HashMap::Base
+      properties :name, :lastname, :phone
+      from_child :address do
+        to_child :address do
+          properties :street, :number
+        end
+      end
+    end
+    class OnlyProvidedKeysMapper < RegularMapper
+      only_provided_keys
+    end
+
+    it do
+      input = { name: "john", address: {street: "Batu Mejan" }, phone: nil }
+      reg = RegularMapper.call(input)
+      only = OnlyProvidedKeysMapper.call(input)
+      binding.pry
+      expect(reg).to hash_mapped('lastname').and_eq(nil)
+      expect(reg).to hash_mapped(:phone).and_eq(nil)
+      expect(reg).to hash_mapped(:address, :number).and_eq(nil)
+      expect(only).not_to hash_mapped('lastname')
+      expect(only).to hash_mapped(:phone).and_eq(nil)
+      expect(only).not_to hash_mapped(:address, :number)
+    end
+  end
 end

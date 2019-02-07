@@ -365,6 +365,26 @@ AfterEach.call(booleans)
 #=> {"name"=>true, "age"=>false}
 ```
 
+### `only_provided_keys`
+
+```ruby
+class RegularMapper < HashMap::Base
+  properties :name, :lastname, :phone
+  from_child :address do
+    to_child :address do
+      properties :street, :number
+    end
+  end
+end
+class OnlyProvidedKeysMapper < RegularMapper
+  only_provided_keys
+end
+
+input = { name: "john", address: {street: "Batu Mejan" }, phone: nil }
+RegularMapper.call(input) # => {"name"=>"john", "lastname"=>nil, "phone"=>nil, "address"=>{"street"=>"Batu Mejan", "number"=>nil}}
+OnlyProvidedKeysMapper.call(input) # => {"name"=>"john", phone: nil, "address"=>{"street"=>"Batu Mejan"}}
+```
+
 ### JSON Adapter
 ```ruby
 class UserMapper < HashMap::Base
