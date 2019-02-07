@@ -79,6 +79,13 @@ describe 'middlewares' do
       only_provided_keys
     end
 
+    it "::only_provided_call" do
+      input = { name: "john", address: {street: "Batu Mejan" }, phone: nil }
+      only = RegularMapper.only_provided_call(input)
+      expect(only).not_to hash_mapped('lastname')
+      expect(only).to hash_mapped(:phone).and_eq(nil)
+      expect(only).not_to hash_mapped(:address, :number)
+    end
     it do
       input = { name: "john", address: {street: "Batu Mejan" }, phone: nil }
       reg = RegularMapper.call(input)

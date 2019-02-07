@@ -365,7 +365,7 @@ AfterEach.call(booleans)
 #=> {"name"=>true, "age"=>false}
 ```
 
-### `only_provided_keys`
+### `only_provided_keys`, `only_provided_call`
 
 ```ruby
 class RegularMapper < HashMap::Base
@@ -383,6 +383,12 @@ end
 input = { name: "john", address: {street: "Batu Mejan" }, phone: nil }
 RegularMapper.call(input) # => {"name"=>"john", "lastname"=>nil, "phone"=>nil, "address"=>{"street"=>"Batu Mejan", "number"=>nil}}
 OnlyProvidedKeysMapper.call(input) # => {"name"=>"john", phone: nil, "address"=>{"street"=>"Batu Mejan"}}
+```
+
+You can use a `only_provided_call` instead of call if you want to achieve the same result:
+
+```ruby
+RegularMapper.only_provided_call(input) # => {"name"=>"john", phone: nil, "address"=>{"street"=>"Batu Mejan"}}
 ```
 
 ### JSON Adapter

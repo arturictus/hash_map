@@ -14,6 +14,12 @@ module HashMap
       end
     end
 
+    def self.only_provided_call(*args)
+      Class.new(self) do
+        only_provided_keys
+      end.call(*args)
+    end
+
     attr_reader :original, :options
     def initialize(original, options = {})
       @original = _transforms_input(prepare_input(original))
