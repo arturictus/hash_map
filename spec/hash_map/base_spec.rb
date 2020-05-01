@@ -14,7 +14,8 @@ module HashMap
           }
         },
         email: 'asdf@sdfs.com',
-        phone: nil
+        phone: nil,
+        collection: [{name: "elem name 1"}]
       }
     end
 
@@ -26,17 +27,31 @@ module HashMap
         }
       end
 
+      class ElemMapper < HashMap::Base
+        property :help_phone do
+          options[:company_phone]
+        end
+
+        property :other_option do 
+          options[:other_option]
+        end
+      end
+
       class OptionMapper < HashMap::Base
         property :first_name, from: :name
 
         property :company_name do
           options[:company_name]
         end
+
+        collection :collection, mapper: ElemMapper, other_option: true
       end
 
       subject { OptionMapper.call(original, company)}
       it { expect(subject[:first_name]).to eq original[:name] }
       it { expect(subject[:company_name]).to eq company[:company_name] }
+      it { expect(subject[:collection].first[:help_phone]).to eq company[:company_phone] }
+      it { expect(subject[:collection].first[:other_option]).to be(true) }
     end
 
     class ProfileMapper < HashMap::Base
