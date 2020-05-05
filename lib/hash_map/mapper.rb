@@ -18,6 +18,7 @@ module HashMap
     private
 
     def get_value(struct)
+
       value = if struct[:is_collection]
                 map_collection(struct)
               elsif struct[:proc]
@@ -44,7 +45,7 @@ module HashMap
     def map_collection(struct)
       value = get_value_from_key(struct)
       value = Fusu::Array.wrap(value)
-      value.map { |elem| struct[:mapper].call(elem) }
+      value.map { |elem| struct[:mapper].call(elem, hash_map.options) }
     end
 
     def get_value_from_key(struct, from = :from)

@@ -31,6 +31,9 @@ module HashMap
         property :help_phone do
           options[:company_phone]
         end
+        property :company_name do
+          options[:company_name]
+        end
 
         property :other_option do 
           options[:other_option]
@@ -51,7 +54,8 @@ module HashMap
       it { expect(subject[:first_name]).to eq original[:name] }
       it { expect(subject[:company_name]).to eq company[:company_name] }
       it { expect(subject[:collection].first[:help_phone]).to eq company[:company_phone] }
-      it { expect(subject[:collection].first[:other_option]).to be(true) }
+      it { expect(subject[:collection].first[:other_option]).to be(nil) }
+      it { expect(subject[:collection].first[:company_name]).to eq company[:company_name] }
     end
 
     class ProfileMapper < HashMap::Base
